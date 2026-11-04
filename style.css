@@ -41,7 +41,7 @@ h1, h2, p { margin-top: 0; }
 h1 { margin-bottom: 23px; font-size: clamp(56px, 8.5vw, 106px); font-weight: normal; letter-spacing: -.075em; line-height: .87; }
 h1 em { color: var(--muted); font-style: italic; }
 .intro-copy { max-width: 330px; color: var(--muted); font-size: 16px; line-height: 1.5; }
-.timer-panel { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 27px 0 30px; text-align: center; }
+.timer-panel { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 64px; padding: 27px 0 30px; text-align: center; }
 .timer-meta { display: flex; justify-content: space-between; color: var(--muted); font-family: "Courier New", monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .session-label { color: var(--accent); }
 .timer-display { margin: 31px 0 4px; font-family: "Courier New", monospace; font-size: clamp(74px, 15vw, 174px); font-weight: bold; letter-spacing: -.09em; line-height: .9; font-variant-numeric: tabular-nums; }

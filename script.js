@@ -19,6 +19,7 @@ const modePickerValue = document.querySelector('#mode-picker-value');
 let selectedMode = localStorage.getItem('draft-mode') || 'pomodoro';
 let isFocus = true;
 let isRunning = false;
+let hasStarted = false;
 let secondsLeft = modes[selectedMode].focus * 60;
 let intervalId = null;
 let completed = Number(localStorage.getItem('draft-completed') || 0);
@@ -47,23 +48,38 @@ function render() {
   modePickerValue.textContent = modes[selectedMode].name;
 }
 
-function beep() {
+function playSessionEndSound() {
   try {
-    const audio = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audio.createOscillator();
-    const gain = audio.createGain();
-    oscillator.frequency.value = 660;
-    gain.gain.setValueAtTime(0.0001, audio.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.14, audio.currentTime + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.45);
-    oscillator.connect(gain).connect(audio.destination);
-    oscillator.start();
-    oscillator.stop(audio.currentTime + 0.5);
-  } catch (error) { /* Audio is optional when unavailable. */ }
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const audio = new AudioContext();
+    const notes = [
+      { frequency: 660, start: 0, duration: 0.32 },
+      { frequency: 880, start: 0.2, duration: 0.48 }
+    ];
+
+    notes.forEach(({ frequency, start, duration }) => {
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+      const noteStart = audio.currentTime + start;
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0.0001, noteStart);
+      gain.gain.exponentialRampToValueAtTime(0.09, noteStart + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + duration);
+      oscillator.connect(gain).connect(audio.destination);
+      oscillator.start(noteStart);
+      oscillator.stop(noteStart + duration);
+    });
+
+    window.setTimeout(() => audio.close(), 900);
+  } catch (error) {
+    console.warn('Session-end sound is unavailable.', error);
+  }
 }
 
-function nextSession() {
-  beep();
+function nextSession(playSound = false) {
+  if (playSound) playSessionEndSound();
   if (isFocus) completed += 1;
   localStorage.setItem('draft-completed', completed);
   isFocus = !isFocus;
@@ -73,11 +89,12 @@ function nextSession() {
 
 function setRunning(value) {
   isRunning = value;
+  if (value) hasStarted = true;
   window.clearInterval(intervalId);
   if (isRunning) {
     intervalId = window.setInterval(() => {
       secondsLeft -= 1;
-      if (secondsLeft <= 0) nextSession();
+      if (secondsLeft <= 0) nextSession(true);
       render();
     }, 1000);
   }
@@ -85,8 +102,12 @@ function setRunning(value) {
 }
 
 function selectMode(modeKey) {
+  if (modeKey !== selectedMode && hasStarted && !window.confirm('The timer has already started. Changing study mode will reset the current session. Continue?')) {
+    return;
+  }
   selectedMode = modeKey;
   isFocus = true;
+  hasStarted = false;
   secondsLeft = modes[modeKey].focus * 60;
   setRunning(false);
   localStorage.setItem('draft-mode', modeKey);
@@ -102,10 +123,11 @@ themeToggle.addEventListener('click', () => applyTheme(root.dataset.theme === 'd
 startButton.addEventListener('click', () => setRunning(!isRunning));
 document.querySelector('#reset-button').addEventListener('click', () => {
   isFocus = true;
+  hasStarted = false;
   secondsLeft = modes[selectedMode].focus * 60;
   setRunning(false);
 });
-document.querySelector('#skip-button').addEventListener('click', nextSession);
+document.querySelector('#skip-button').addEventListener('click', () => nextSession());
 document.querySelector('#mode-picker').addEventListener('click', () => { modeDialog.hidden = false; });
 document.querySelector('#mode-dialog-close').addEventListener('click', () => { modeDialog.hidden = true; });
 modeDialog.addEventListener('click', (event) => { if (event.target === modeDialog) modeDialog.hidden = true; });
@@ -113,7 +135,7 @@ document.querySelectorAll('.mode-item').forEach((item) => item.addEventListener(
 document.addEventListener('keydown', (event) => {
   if (event.target.matches('input, textarea, select')) return;
   if (event.code === 'Space') { event.preventDefault(); setRunning(!isRunning); }
-  if (event.key.toLowerCase() === 'r') { isFocus = true; secondsLeft = modes[selectedMode].focus * 60; setRunning(false); }
+  if (event.key.toLowerCase() === 'r') { isFocus = true; hasStarted = false; secondsLeft = modes[selectedMode].focus * 60; setRunning(false); }
   if (event.key === 'Escape') modeDialog.hidden = true;
 });
 
