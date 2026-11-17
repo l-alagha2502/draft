@@ -15,11 +15,14 @@
         <span class="brand-mark" aria-hidden="true"></span>
         <span>Draft.</span>
       </a>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-        <span class="theme-icon sun-icon" aria-hidden="true">☼</span>
-        <span class="theme-track"><span class="theme-knob"></span></span>
-        <span class="theme-icon moon-icon" aria-hidden="true">☾</span>
-      </button>
+      <div class="topbar-actions">
+        <button class="help-button" id="help-button" type="button" aria-label="What is a Study Mode?" aria-haspopup="dialog" aria-controls="help-dialog">?</button>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <span class="theme-icon sun-icon" aria-hidden="true">☼</span>
+          <span class="theme-track"><span class="theme-knob"></span></span>
+          <span class="theme-icon moon-icon" aria-hidden="true">☾</span>
+        </button>
+      </div>
     </header>
 
     <main>
@@ -65,6 +68,40 @@
         <button class="mode-item" type="button" role="tab" aria-selected="false" data-mode="ultradian"><span class="mode-number">03</span><span class="mode-name">90-Minute Ultradian</span><span class="mode-time">90 / 20</span></button>
         <button class="mode-item" type="button" role="tab" aria-selected="false" data-mode="rule50"><span class="mode-number">04</span><span class="mode-name">Rule of 50</span><span class="mode-time">50 / 10</span></button>
         <button class="mode-item" type="button" role="tab" aria-selected="false" data-mode="desktime"><span class="mode-number">05</span><span class="mode-name">Desktime 112 / 26</span><span class="mode-time">112 / 26</span></button>
+      </div>
+    </section>
+  </div>
+  <div class="dialog-backdrop" id="help-dialog" hidden>
+    <section class="help-dialog" role="dialog" aria-modal="true" aria-labelledby="help-dialog-title">
+      <div class="dialog-header">
+        <div><p class="eyebrow">A little context</p><h2 id="help-dialog-title">What is a Study Mode?</h2></div>
+        <button class="dialog-close" id="help-dialog-close" type="button" aria-label="Close study mode information">×</button>
+      </div>
+      <div class="help-copy">
+        <p>Instead of forcing yourself to study until your brain melts, study modes split your time into focused work sprints and intentional breaks.</p>
+        <p>Each preset uses a different work-to-rest ratio backed by research on how your brain handles attention and fatigue. Short cycles help you start when you're unmotivated; longer cycles let you lock into deep focus without getting interrupted right as you hit your groove.</p>
+      </div>
+      <button class="read-more-button" id="read-more-button" type="button" aria-expanded="false" aria-controls="help-details">Read More <span aria-hidden="true">↗</span></button>
+      <div class="help-details" id="help-details" hidden>
+        <h3>Why different timers exist</h3>
+        <p>Your brain isn't built to focus at 100% for hours straight—it naturally cycles between peaks of alertness and drops in energy. Matching your timer to your current energy level (and how hard the task is) keeps you productive without burning out.</p>
+        <p>Here is when to use each one:</p>
+        <h4>Classic Pomodoro <span>(25m work / 5m break)</span></h4>
+        <p><strong>Best for:</strong> Getting started when you're procrastinating, tired, or dreading a task.</p>
+        <p><strong>How it works:</strong> 25 minutes feels small enough that your brain won't fight starting, and frequent breaks keep you from burning out on tedious work.</p>
+        <h4>Rule of 50 <span>(50m work / 10m break)</span></h4>
+        <p><strong>Best for:</strong> Everyday studying, homework, and steady, distraction-free progress.</p>
+        <p><strong>How it works:</strong> Long enough to get into a solid rhythm without hitting mental fatigue, giving you a clean 10-minute reset every hour.</p>
+        <h4>The 52/17 Rule <span>(52m work / 17m break)</span></h4>
+        <p><strong>Best for:</strong> High-output days when you have a lot to knock out.</p>
+        <p><strong>How it works:</strong> Based on productivity tracking data—top performers sprint hard for nearly an hour, then completely step away from screens for 17 minutes so their brain actually recovers.</p>
+        <h4>90-Minute Ultradian <span>(90m work / 20m break)</span></h4>
+        <p><strong>Best for:</strong> Heavy deep work, coding, writing, or complex problem-solving.</p>
+        <p><strong>How it works:</strong> Syncs with your body's natural "ultradian rhythm." Your brain can sustain peak focus for about 90 minutes before your mental battery drops and you need a real rest.</p>
+        <h4>DeskTime 112/26 <span>(112m work / 26m break)</span></h4>
+        <p><strong>Best for:</strong> Locking in for massive, uninterrupted flow states.</p>
+        <p><strong>How it works:</strong> Based on updated research of the top 1% most productive workers. Nearly two hours of total immersion, followed by a long break to fully recharge.</p>
+        <p class="cheat-sheet"><strong>Quick cheat sheet:</strong> Low energy? Pick Pomodoro. Normal study session? Go 50/10 or 52/17. Ready to lock in and disappear into your work? Hit 90-Minute or 112/26.</p>
       </div>
     </section>
   </div>
