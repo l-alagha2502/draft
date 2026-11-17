@@ -15,10 +15,6 @@ const sessionLabel = document.querySelector('#session-label');
 const completedCount = document.querySelector('#completed-count');
 const themeToggle = document.querySelector('#theme-toggle');
 const modeDialog = document.querySelector('#mode-dialog');
-const helpDialog = document.querySelector('#help-dialog');
-const helpButton = document.querySelector('#help-button');
-const readMoreButton = document.querySelector('#read-more-button');
-const helpDetails = document.querySelector('#help-details');
 const modePickerValue = document.querySelector('#mode-picker-value');
 let selectedMode = localStorage.getItem('draft-mode') || 'pomodoro';
 let isFocus = true;
@@ -135,24 +131,12 @@ document.querySelector('#skip-button').addEventListener('click', () => nextSessi
 document.querySelector('#mode-picker').addEventListener('click', () => { modeDialog.hidden = false; });
 document.querySelector('#mode-dialog-close').addEventListener('click', () => { modeDialog.hidden = true; });
 modeDialog.addEventListener('click', (event) => { if (event.target === modeDialog) modeDialog.hidden = true; });
-helpButton.addEventListener('click', () => { helpDialog.hidden = false; });
-document.querySelector('#help-dialog-close').addEventListener('click', () => { helpDialog.hidden = true; });
-helpDialog.addEventListener('click', (event) => { if (event.target === helpDialog) helpDialog.hidden = true; });
-readMoreButton.addEventListener('click', () => {
-  const expanded = readMoreButton.getAttribute('aria-expanded') === 'true';
-  readMoreButton.setAttribute('aria-expanded', String(!expanded));
-  readMoreButton.firstChild.textContent = expanded ? 'Read More ' : 'Read Less ';
-  helpDetails.hidden = expanded;
-});
 document.querySelectorAll('.mode-item').forEach((item) => item.addEventListener('click', () => selectMode(item.dataset.mode)));
 document.addEventListener('keydown', (event) => {
   if (event.target.matches('input, textarea, select')) return;
   if (event.code === 'Space') { event.preventDefault(); setRunning(!isRunning); }
   if (event.key.toLowerCase() === 'r') { isFocus = true; hasStarted = false; secondsLeft = modes[selectedMode].focus * 60; setRunning(false); }
-  if (event.key === 'Escape') {
-    modeDialog.hidden = true;
-    helpDialog.hidden = true;
-  }
+  if (event.key === 'Escape') modeDialog.hidden = true;
 });
 
 applyTheme(localStorage.getItem('draft-theme') || 'light');
